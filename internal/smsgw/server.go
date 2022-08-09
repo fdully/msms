@@ -36,7 +36,8 @@ func (s *Server) Routes(ctx context.Context) *mux.Router {
 	r.Use(middleware.PopulateLogger(logger))
 
 	r.Handle("/", s.handleRoot())
-	r.Handle("/api/v1/sms/send", s.handleSend()).Methods("GET")
+	r.Handle("/send-sms", s.handleSend())
+	r.Handle("/api/v1/sms/send", s.handleSend())
 	r.Handle("/api/v1/sms/ise", s.handleISE()).Methods("GET")
 	r.Handle("/api/v1/sms/info/{smsID}", s.handleInfo()).Methods("GET")
 

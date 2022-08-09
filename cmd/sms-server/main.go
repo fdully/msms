@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net"
 	"os/signal"
 	"syscall"
 
@@ -49,10 +50,17 @@ func realMain(ctx context.Context) error {
 		return fmt.Errorf("smsgw.NewServer: %w", err)
 	}
 
-	srv, err := server.New(cfg.Port)
+	l, err := net.Listen("tcp", cfg.Addr)
+	if err != nil {
+		return fmt.Errorf("error listening: %s", err.Error())
+	}
+	// Close the listener when the application closes.
+	defer l.Close()
+
+	srv, err := server.NewFromListener(l)
 	if err != nil {
 		return fmt.Errorf("server.New: %w", err)
 	}
-	logger.Infow("server listening", "port", cfg.Port)
+	logger.Infow("server listening", "address", srv.Addr())
 	return srv.ServeHTTPHandler(ctx, smsgwServer.Routes(ctx))
 }

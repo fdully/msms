@@ -13,8 +13,8 @@ var (
 type Config struct {
 	MTS mtssms.Config
 
-	Port      string   `env:"PORT, default=8080"`
-	BadPhones []string `env:"BAD_PHONES"`
+	Addr      string   `env:"SMSGWAPP_ADDRESS, default=localhost:8090"`
+	BadPhones []string `env:"SMSGWAPP_BAD_PHONES"`
 }
 
 func (c *Config) MTSConfig() *mtssms.Config {

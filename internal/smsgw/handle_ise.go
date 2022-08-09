@@ -35,7 +35,7 @@ func (s *Server) handleISE() http.Handler {
 			return
 		}
 
-		passcode := modifyMessage(msg)
+		passcode := getPasscode(msg)
 		if passcode == "" {
 			err := fmt.Errorf("doesn't contain passcode %s", msg)
 			logger.Info(err)
@@ -58,7 +58,7 @@ func (s *Server) handleISE() http.Handler {
 	})
 }
 
-func modifyMessage(msg string) string {
+func getPasscode(msg string) string {
 	m := regexp.MustCompile(`Имя пользователя: (\d{6})`)
 	mm := m.FindStringSubmatch(msg)
 
